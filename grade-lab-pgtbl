@@ -32,6 +32,13 @@ def test_pgtbltest():
 def test_nettest_():
     r.match('^ugetpid_test: OK$')
 
+@test(10, "pgtbltest: ugetpid_perm", parent=test_pgtbltest)
+def test_nettest_():
+    r.match(
+        '^.*unexpected scause 0x000000000000000f.*$',
+        '^ugetpid_perm_test: OK$',
+    )
+
 @test(10, "pgtbltest: pgaccess", parent=test_pgtbltest)
 def test_nettest_():
     r.match('^pgaccess_test: OK$')
