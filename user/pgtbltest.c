@@ -2,15 +2,18 @@
 #include "kernel/fcntl.h"
 #include "kernel/types.h"
 #include "kernel/riscv.h"
+#include "kernel/memlayout.h"
 #include "user/user.h"
 
 void ugetpid_test();
+void ugetpid_perm_test();
 void pgaccess_test();
 
 int
 main(int argc, char *argv[])
 {
   ugetpid_test();
+  ugetpid_perm_test();
   pgaccess_test();
   printf("pgtbltest: all tests succeeded\n");
   exit(0);
@@ -46,6 +49,27 @@ ugetpid_test()
     exit(0);
   }
   printf("ugetpid_test: OK\n");
+}
+
+void
+ugetpid_perm_test()
+{
+  printf("ugetpid_perm_test starting\n");
+  testname = "ugetpid_perm_test";
+
+  int ret = fork();
+  if (ret != 0) {
+    wait(&ret);
+    if (ret == 0) {
+      err("usyscall region is not read-only from user space");
+      exit(1);
+    }
+  } else {
+    struct usyscall *usyscall = (struct usyscall *) USYSCALL;
+    usyscall->pid = 0;
+    exit(0);
+  }
+  printf("ugetpid_perm_test: OK\n");
 }
 
 void
