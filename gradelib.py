@@ -1,7 +1,7 @@
 from __future__ import print_function
 
 import sys, os, re, time, socket, select, subprocess, errno, shutil, random, string, json
-from subprocess import check_call, Popen
+from subprocess import check_call, Popen, TimeoutExpired
 from optparse import OptionParser
 
 __all__ = []
@@ -54,7 +54,7 @@ def test(points, title=None, parent=None):
                 if parent_failed:
                     raise AssertionError('Parent failed: %s' % parent.__name__)
                 fn()
-            except AssertionError as e:
+            except (AssertionError, TimeoutExpired) as e:
                 fail = str(e)
 
             # Display and handle test result
