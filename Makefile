@@ -258,6 +258,7 @@ endif
 
 UEXTRA=
 ifeq ($(LAB),util)
+	UEXTRA += user/findtest.sh
 	UEXTRA += user/xargstest.sh
 endif
 
