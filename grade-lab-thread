@@ -19,11 +19,6 @@ def test_uthread():
     if not re.findall('\n'.join(expected), r.qemu.output, re.M):
         raise AssertionError('Output does not match expected output')
 
-@test(5, "answers-thread.txt")
-def test_answers():
-    # just a simple sanity check, will be graded manually
-    check_answers("answers-thread.txt")
-    
 # test the first ph task: add locks to eliminate the missing keys.
 @test(10, "ph_safe")
 def test_ph_safe():
@@ -54,7 +49,7 @@ def test_ph_fast():
     if rate2 < 1.25 * rate1:
         raise AssertionError('Parallel put() speedup is less than 1.25x')
 
-@test(14, "barrier")
+@test(19, "barrier")
 def test_barrier():
     subprocess.run(['make', 'barrier'])
     result = subprocess.run(['./barrier', '2'], timeout=30, stdout=subprocess.PIPE)
